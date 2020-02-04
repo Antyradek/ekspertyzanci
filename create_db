@@ -1,10 +1,9 @@
 #!/usr/bin/perl 
 
-# Stwarza nową bazę MySQLite
+# Stwarza nową bazę SQLite
 
 use strict;
 use warnings;
-
 use DBI;
 
 # Otwórz bazę
