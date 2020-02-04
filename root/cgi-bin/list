@@ -32,7 +32,7 @@ my $sth = $dbh->prepare("SELECT login,name,surname FROM experts");
 $sth->execute();
 while (my $row = $sth->fetchrow_hashref) 
 {
-	print "<p><a href='details?login=$row->{login}'>$row->{name} $row->{surname}</a></p>";
+	print "<p><a href='details?$row->{login}'>$row->{name} $row->{surname}</a></p>";
 }
 
 print "</body></html>";

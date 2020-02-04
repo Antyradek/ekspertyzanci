@@ -1,0 +1,44 @@
+#!/usr/bin/perl
+
+# Wyświetla dane eksperta
+
+use strict;
+use warnings;
+use CGI;
+use DBI;
+
+my $dbfile = "../main.db";
+my $dsn      = "dbi:SQLite:dbname=$dbfile";
+my $dbh = DBI->connect($dsn, "", "", {
+   PrintError       => 0,
+   RaiseError       => 1,
+   AutoCommit       => 1,
+   FetchHashKeyName => 'NAME_lc',
+});
+
+my $cgi = CGI->new;
+
+# Login jest jedyną wartością
+my $login = $ENV{"QUERY_STRING"};
+$login =~ s/[^[:alnum:]_]//g;
+
+my $sth = $dbh->prepare("SELECT name,name2,surname,address FROM experts WHERE login='$login'");
+$sth->execute();
+my $row = $sth->fetchrow_hashref ;
+
+print $cgi->header(
+-type => "text/html",
+-charset => "utf-8",
+);
+
+print "<html><head><title>Ekspertyzanci</title></head>";
+print "<body>";
+print "<h1>Ekspert $row->{name} $row->{name2} $row->{surname}</h1>";
+
+print "<table>";
+print "<tr><td>Imię:</td><td>$row->{name} $row->{name2}</td></tr>";
+print "<tr><td>Nazwisko:</td><td>$row->{surname}</td></tr>";
+print "<tr><td>Adres:</td><td>$row->{address}</td></tr>";
+print "</table>";
+
+print "</body></html>";
