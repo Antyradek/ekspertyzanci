@@ -50,4 +50,18 @@ while (my $row = $sth->fetchrow_hashref)
 	print "</div>";
 }
 
+print "<h2>Odpowiedz na pytanie</h2>";
+print "<form action='answer' method='post'>";
+print "<input type='text' placeholder='Odpowiedź' name='response'/>";
+print "<input type='hidden' name='questionid' value='$questionid'/>";
+print "<p>Deweloperskie zalogowanie się:</p>";
+print "<input type='radio' name='login' value='einstein69'/>Einstein";
+print "<input type='radio' name='login' value='Xx_tesslaa_xX'/>Tesla";
+print "<input type='radio' name='login' value='stephen_hawking'/>Hawking";
+print "<input type='radio' name='login' value='zderzakomistrz'/>Łągiewka";
+print "<input type='radio' name='login' value='mengele1488'/>Doktor Śmierć";
+print "<br/>";
+print "<input type='submit' value='Wyślij'/>";
+print "</form>";
+
 print "</body></html>";

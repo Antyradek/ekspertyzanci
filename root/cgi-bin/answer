@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+
+# Wyświetla pytanie i odpowiedzi
+
+use strict;
+use warnings;
+use CGI;
+use DBI;
+
+my $dbfile = "../main.db";
+my $dsn      = "dbi:SQLite:dbname=$dbfile";
+my $dbh = DBI->connect($dsn, "", "", {
+   PrintError       => 0,
+   RaiseError       => 1,
+   AutoCommit       => 1,
+   FetchHashKeyName => 'NAME_lc',
+});
+
+my $cgi = CGI->new;
+
+print $cgi->header(
+-type => "text/html",
+-charset => "utf-8",
+);
+
+my $response = $cgi->param("response");
+my $login = $cgi->param("login");
+my $questionid = $cgi->param("questionid");
+
+#TODO naprawić to fajne SQL Injection
+#TODO i jeszcze XSS
+
+my $dbfile = "../main.db";
+my $dsn      = "dbi:SQLite:dbname=$dbfile";
+my $dbh = DBI->connect($dsn, "", "", {
+   PrintError       => 0,
+   RaiseError       => 1,
+   AutoCommit       => 1,
+   FetchHashKeyName => 'NAME_lc',
+});
+
+$dbh->do("INSERT INTO answers(text,questionid,expertlogin) VALUES ('$response','$questionid','$login')");
+
+print "<html><head><title>Ekspertyzanci</title></head>";
+print "<body>";
+print "<h1>Odpowiedź na pytanie</h1>";
+print "<h2>Ekspert $login odpowiedział na pytanie $questionid</h2>";
+print "<p>$response</p>";
+print "<p>Odpowiedź została zapisana</p>";
+
+print "</body></html>";
