@@ -17,7 +17,7 @@ my $dbh = DBI->connect($dsn, "", "", {
    FetchHashKeyName => 'NAME_lc',
 });
 
-# Tabele
+# Tabela ekspertów
 my $sql = <<"END_SQL";
 CREATE TABLE experts (
 login			TEXT NOT NULL PRIMARY KEY UNIQUE, 
@@ -31,11 +31,33 @@ phone			TEXT
 END_SQL
 $dbh->do($sql);
 
-# Dane
+# Tabela doświadczeń
+$sql = <<"END_SQL";
+CREATE TABLE experiences (
+name			TEXT,
+id				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+login			TEXT NOT NULL,
+FOREIGN KEY(login) REFERENCES experts(login)
+)
+END_SQL
+$dbh->do($sql);
+
+# Eksperci i doświadczenia
 $dbh->do("INSERT INTO experts VALUES ('einstein69','526sdh23','Einstein','Albert',NULL,'Ulmstrasse USA 3342','0700880')");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Otwarcie osobliwości w szafie.','einstein69')");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Obliczenie E=mc².','einstein69')");
+
 $dbh->do("INSERT INTO experts VALUES ('Xx_tesslaa_xX','ffee7382','Tesla','Nicola','Gregory','Gdzieś w Bułgarii',NULL)");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Protoreaktor atomowy.','Xx_tesslaa_xX')");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Transormator do strzelania piorunami.','Xx_tesslaa_xX')");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Przepis na nieskończoną energię.','Xx_tesslaa_xX')");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Wysprzedanie swoich wynalazków.','Xx_tesslaa_xX')");
+
 $dbh->do("INSERT INTO experts VALUES ('stephen_hawking','0000','Hawking','Stephen','Ricardio Ramirez Estardolla','Noname Street, Oxford, GB','992-223-555')");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Zaawansowane prace nad czarnymi dziurami.','stephen_hawking')");
+
 $dbh->do("INSERT INTO experts VALUES ('zderzakomistrz','dawachajs','Łągiewka','Zderzakowynalazca','Najlepszy',NULL,NULL)");
 $dbh->do("INSERT INTO experts VALUES ('mengele1488','gasthejews','Mengele','Josef',NULL,'Grünsburg, Bavaria','141414888888')");
+$dbh->do("INSERT INTO experiences(name,login) VALUES ('Stworzenie fajnych bliźniaków syjamskich z niesyjamskich.','mengele1488')");
 
 $dbh->disconnect;

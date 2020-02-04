@@ -24,7 +24,8 @@ $login =~ s/[^[:alnum:]_]//g;
 
 my $sth = $dbh->prepare("SELECT name,name2,surname,address FROM experts WHERE login='$login'");
 $sth->execute();
-my $row = $sth->fetchrow_hashref ;
+my $row = $sth->fetchrow_hashref;
+
 
 print $cgi->header(
 -type => "text/html",
@@ -40,5 +41,16 @@ print "<tr><td>Imię:</td><td>$row->{name} $row->{name2}</td></tr>";
 print "<tr><td>Nazwisko:</td><td>$row->{surname}</td></tr>";
 print "<tr><td>Adres:</td><td>$row->{address}</td></tr>";
 print "</table>";
+
+print "<h2>Doświadczenia:</h2>";
+
+$sth = $dbh->prepare("SELECT name FROM experiences WHERE login='$login'");
+$sth->execute();
+print "<ul>";
+while (my $row = $sth->fetchrow_hashref) 
+{
+   print "<li>$row->{name}</li>";
+}
+print "</ul>";
 
 print "</body></html>";
