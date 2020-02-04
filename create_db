@@ -42,6 +42,55 @@ FOREIGN KEY(login) REFERENCES experts(login)
 END_SQL
 $dbh->do($sql);
 
+# Tabela użytkowników
+$sql = <<"END_SQL";
+CREATE TABLE users (
+login			TEXT NOT NULL PRIMARY KEY UNIQUE, 
+password		TEXT NOT NULL,
+email			TEXT NOT NULL
+)
+END_SQL
+$dbh->do($sql);
+
+# Tabela pytań
+$sql = <<"END_SQL";
+CREATE TABLE questions (
+id				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+text			TEXT NOT NULL,
+expertlogin		TEXT,
+userlogin		TEXT NOT NULL,
+FOREIGN KEY(expertlogin) REFERENCES experts(login),
+FOREIGN KEY(userlogin) REFERENCES users(login)
+)
+END_SQL
+$dbh->do($sql);
+
+# Tabela odpowiedzi
+$sql = <<"END_SQL";
+CREATE TABLE answers (
+id				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+text			TEXT NOT NULL,
+questionid		INTEGER NOT NULL,
+expertlogin		TEXT NOT NULL,
+FOREIGN KEY(questionid) REFERENCES questions(id),
+FOREIGN KEY(expertlogin) REFERENCES experts(login)
+)
+END_SQL
+$dbh->do($sql);
+
+# Tabela ocen
+$sql = <<"END_SQL";
+CREATE TABLE points (
+id				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+value			INTEGER NOT NULL,
+answerid		INTEGER NOT NULL,
+userlogin		TEXT NOT NULL,
+FOREIGN KEY(answerid) REFERENCES answers(id),
+FOREIGN KEY(userlogin) REFERENCES users(login)
+)
+END_SQL
+$dbh->do($sql);
+
 # Eksperci i doświadczenia
 $dbh->do("INSERT INTO experts VALUES ('einstein69','526sdh23','Einstein','Albert',NULL,'Ulmstrasse USA 3342','0700880')");
 $dbh->do("INSERT INTO experiences(name,login) VALUES ('Otwarcie osobliwości w szafie.','einstein69')");
@@ -59,5 +108,33 @@ $dbh->do("INSERT INTO experiences(name,login) VALUES ('Zaawansowane prace nad cz
 $dbh->do("INSERT INTO experts VALUES ('zderzakomistrz','dawachajs','Łągiewka','Zderzakowynalazca','Najlepszy',NULL,NULL)");
 $dbh->do("INSERT INTO experts VALUES ('mengele1488','gasthejews','Mengele','Josef',NULL,'Grünsburg, Bavaria','141414888888')");
 $dbh->do("INSERT INTO experiences(name,login) VALUES ('Stworzenie fajnych bliźniaków syjamskich z niesyjamskich.','mengele1488')");
+
+# Użytkownicy
+$dbh->do("INSERT INTO users VALUES ('helo333','sss33344','helo\@ll.dd')");
+$dbh->do("INSERT INTO users VALUES ('werter','cierpie','calyczas\@cierpie.pl')");
+$dbh->do("INSERT INTO users VALUES ('chucknorris','kkssll','gmail\@chucknorris.com')");
+$dbh->do("INSERT INTO users VALUES ('user1','psswd','mail\@mail.com')");
+$dbh->do("INSERT INTO users VALUES ('user2','psswd','mail\@mail.com')");
+$dbh->do("INSERT INTO users VALUES ('user3','psswd','mail\@mail.com')");
+
+# Pytania
+$dbh->do("INSERT INTO questions(id,text,expertlogin,userlogin) VALUES ('11','Dlaczego kot mruczy?','stephen_hawking','werter')");
+$dbh->do("INSERT INTO questions(id,text,expertlogin,userlogin) VALUES ('22','Ile to mc²?','einstein69','helo333')");
+$dbh->do("INSERT INTO questions(id,text,expertlogin,userlogin) VALUES ('33','Dokąd nocą tupta jeż?',NULL,'user2')");
+$dbh->do("INSERT INTO questions(id,text,expertlogin,userlogin) VALUES ('44','Jaki jest sens egzystencji?',NULL,'user2')");
+
+# Odpwiedzi
+$dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('1','Bo wpadł do czarnej dziury.','11','stephen_hawking')");
+$dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('10','Ponieważ to kot','11','Xx_tesslaa_xX')");
+$dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('2','Zapewnie stała kosmologiczna.','22','einstein69')");
+$dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('3','Wykąpać się pod prysznicem.','33','mengele1488')");
+$dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('30','Dajcie mi kaseeee!','33','zderzakomistrz')");
+$dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('300','Aby przejść na drugą stronę.','33','einstein69')");
+
+# Oceny odpowiedzi
+$dbh->do("INSERT INTO points(answerid,value,userlogin) VALUES ('1','1','user1')");
+$dbh->do("INSERT INTO points(answerid,value,userlogin) VALUES ('3','5','chucknorris')");
+$dbh->do("INSERT INTO points(answerid,value,userlogin) VALUES ('30','4','chucknorris')");
+$dbh->do("INSERT INTO points(answerid,value,userlogin) VALUES ('2','2','chucknorris')");
 
 $dbh->disconnect;
