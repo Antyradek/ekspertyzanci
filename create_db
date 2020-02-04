@@ -123,7 +123,7 @@ $dbh->do("INSERT INTO questions(id,text,expertlogin,userlogin) VALUES ('22','Ile
 $dbh->do("INSERT INTO questions(id,text,expertlogin,userlogin) VALUES ('33','Dokąd nocą tupta jeż?',NULL,'user2')");
 $dbh->do("INSERT INTO questions(id,text,expertlogin,userlogin) VALUES ('44','Jaki jest sens egzystencji?',NULL,'user2')");
 
-# Odpwiedzi
+# Odpowiedzi
 $dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('1','Bo wpadł do czarnej dziury.','11','stephen_hawking')");
 $dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('10','Ponieważ to kot','11','Xx_tesslaa_xX')");
 $dbh->do("INSERT INTO answers(id,text,questionid,expertlogin) VALUES ('2','Zapewnie stała kosmologiczna.','22','einstein69')");

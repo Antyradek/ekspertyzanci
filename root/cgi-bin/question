@@ -1,0 +1,50 @@
+#!/usr/bin/perl
+
+# Wyświetla pytanie i odpowiedzi
+
+use strict;
+use warnings;
+use CGI;
+use DBI;
+
+my $dbfile = "../main.db";
+my $dsn      = "dbi:SQLite:dbname=$dbfile";
+my $dbh = DBI->connect($dsn, "", "", {
+   PrintError       => 0,
+   RaiseError       => 1,
+   AutoCommit       => 1,
+   FetchHashKeyName => 'NAME_lc',
+});
+
+my $cgi = CGI->new;
+
+# Id pytania jest jedyną wartością
+my $questionid = $ENV{"QUERY_STRING"};
+$questionid =~ s/[^[:digit:]]//g;
+
+print $cgi->header(
+-type => "text/html",
+-charset => "utf-8",
+);
+
+print "<html><head><title>Ekspertyzanci</title></head>";
+print "<body>";
+
+my $sth = $dbh->prepare("SELECT questions.text FROM questions WHERE questions.id = '$questionid'");
+$sth->execute();
+my $questiontext = $sth->fetchrow_hashref;
+print "<h1>Pytanie</h1>";
+print "<h2>$questiontext->{text}</h2>";
+
+$sth = $dbh->prepare("SELECT answers.text,experts.name,experts.surname,points.value,points.userlogin FROM questions JOIN answers ON questions.id = answers.questionid JOIN experts ON experts.login = answers.expertlogin JOIN points ON points.answerid = answers.id WHERE questions.id = '$questionid'");
+$sth->execute();
+while (my $row = $sth->fetchrow_hashref) 
+{
+	print "<div>";
+	print "<h3>$row->{text}</h3>";
+	print "<p>Odpowiedź eksperta $row->{name} $row->{surname}</p>";
+	print "<p>Ocena $row->{value} wystawiona przez $row->{userlogin}</p>";
+	print "</div>";
+}
+
+print "</body></html>";
