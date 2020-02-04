@@ -6,3 +6,8 @@
                |_|                  |___/                       
 
 Mini eksperyment na APSI.
+
+Wymagane programy:
+• Moduł DBI dla Perla (perl-dbi).
+• Moduł DBD SQLite dla Perla (perl-dbd-sqlite).
+• (opcjonalnie) Coś fajnego do przeglądania bazy SQLite.

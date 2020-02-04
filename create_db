@@ -1,0 +1,42 @@
+#!/usr/bin/perl 
+
+# Stwarza nową bazę MySQLite
+
+use strict;
+use warnings;
+
+use DBI;
+
+# Otwórz bazę
+
+my $dbfile = "main.db";
+my $dsn      = "dbi:SQLite:dbname=$dbfile";
+my $dbh = DBI->connect($dsn, "", "", {
+   PrintError       => 0,
+   RaiseError       => 1,
+   AutoCommit       => 1,
+   FetchHashKeyName => 'NAME_lc',
+});
+
+# Tabele
+my $sql = <<"END_SQL";
+CREATE TABLE experts (
+login			TEXT NOT NULL PRIMARY KEY UNIQUE, 
+password		TEXT NOT NULL,
+surname			TEXT NOT NULL,
+name			TEXT NOT NULL,
+name2			TEXT,
+address			TEXT,
+phone			TEXT
+)
+END_SQL
+$dbh->do($sql);
+
+# Dane
+$dbh->do("INSERT INTO experts VALUES ('einstein69','526sdh23','Einstein','Albert',NULL,'Ulmstrasse USA 3342','0700880')");
+$dbh->do("INSERT INTO experts VALUES ('Xx_tesslaa_xX','ffee7382','Tesla','Nicola','Gregory','Gdzieś w Bułgarii',NULL)");
+$dbh->do("INSERT INTO experts VALUES ('stephen_hawking','0000','Hawking','Stephen','Ricardio Ramirez Estardolla','Noname Street, Oxford, GB','992-223-555')");
+$dbh->do("INSERT INTO experts VALUES ('zderzakomistrz','dawachajs','Łągiewka','Zderzakowynalazca','Najlepszy',NULL,NULL)");
+$dbh->do("INSERT INTO experts VALUES ('mengele1488','gasthejews','Mengele','Josef',NULL,'Grünsburg, Bavaria','141414888888')");
+
+$dbh->disconnect;
