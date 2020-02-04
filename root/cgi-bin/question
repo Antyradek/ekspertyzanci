@@ -36,14 +36,17 @@ my $questiontext = $sth->fetchrow_hashref;
 print "<h1>Pytanie</h1>";
 print "<h2>$questiontext->{text}</h2>";
 
-$sth = $dbh->prepare("SELECT answers.text,experts.name,experts.surname,points.value,points.userlogin FROM questions JOIN answers ON questions.id = answers.questionid JOIN experts ON experts.login = answers.expertlogin JOIN points ON points.answerid = answers.id WHERE questions.id = '$questionid'");
+$sth = $dbh->prepare("SELECT answers.text,experts.name,experts.surname,points.value,points.userlogin FROM questions JOIN answers ON questions.id = answers.questionid JOIN experts ON experts.login = answers.expertlogin LEFT OUTER JOIN points ON points.answerid = answers.id WHERE questions.id = '$questionid'");
 $sth->execute();
 while (my $row = $sth->fetchrow_hashref) 
 {
 	print "<div>";
 	print "<h3>$row->{text}</h3>";
 	print "<p>Odpowiedź eksperta $row->{name} $row->{surname}</p>";
-	print "<p>Ocena $row->{value} wystawiona przez $row->{userlogin}</p>";
+	if($row->{value} ne "")
+	{
+		print "<p>Ocena $row->{value} wystawiona przez $row->{userlogin}</p>";
+	}
 	print "</div>";
 }
 
