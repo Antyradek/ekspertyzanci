@@ -7,7 +7,40 @@
 
 Mini eksperyment na APSI.
 
-Wymagane programy:
+WYMAGANE PROGRAMY:
+• Perl.
 • Moduł DBI dla Perla (perl-dbi).
 • Moduł DBD SQLite dla Perla (perl-dbd-sqlite).
 • (opcjonalnie) Coś fajnego do przeglądania bazy SQLite.
+• Serwer z obsługą CGI.
+
+URUCHOMIENIE:
+• Najpierw zbuduj bazę, używając dołączonego skryptu.
+• Uruchom serwer, aby działał na głównym katalogu (np. dołączonym skryptem).
+• Wejdź przez przeglądarkę na wskazany port.
+
+DZIAŁANIE:
+Baza składa się z 6 tabel:
+• Eksperci
+• Doświadczenia ekspertów
+• Użytkownicy
+• Pytania
+• Odpowiedzi
+• Oceny odpowiedzi
+Poustawiane są odpowiednie restrykcje na klucze obce.
+
+Widoki:
+• Ekran startowy statyczny
+• Lista imion ekspertów z linkami
+• Szczegóły eksperta i lista jego doświadczeń
+• Lista zadanych pytań z linkami i loginami zadających
+• Lista odpowiedzi na pytanie z nazwą eksperta, oceną odpowiedzi i formularzem do odpowiedzi
+• Zapisanie danych formularza do odpowiedzi
+
+Uwagi:
+• System może być podatny na niektóre problemy bezpieczeństwa, testowane jest tylko pobieżnie.
+• Nie ma także domyślnie szyfrowania połączenia.
+• Nie ma sesji logowania, które pamiętałyby ciasteczko użytkownika i jego login.
+• Nie ma zabezpieczeń przez wielokrotnym wysłaniem formularza.
+• Sanitizacja wejścia może być za bardzo/za mało restrykcyjna.
+• Kod jest brzydki i się powtarza.

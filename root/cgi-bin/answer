@@ -24,11 +24,12 @@ print $cgi->header(
 );
 
 my $response = $cgi->param("response");
+#NOTE mam cichą nadzieję, że na SQLInjection wystarczy
+$response =~ s/[\'\;\"\&\=]//g;
 my $login = $cgi->param("login");
+$login =~ s/[^[:alnum:]_]//g;
 my $questionid = $cgi->param("questionid");
-
-#TODO naprawić to fajne SQL Injection
-#TODO i jeszcze XSS
+$questionid =~ s/[^[:digit:]]//g;
 
 my $dbfile = "../main.db";
 my $dsn      = "dbi:SQLite:dbname=$dbfile";
